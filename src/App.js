@@ -9,8 +9,8 @@ function App() {
   const todoRef = useRef();
   
   useEffect(() => {
-    const storeTodos = JSON.parse(localStorage.getItem(KEY));
-    storeTodos && setTodo(storeTodos);
+    const storedTodos = JSON.parse(localStorage.getItem(KEY));
+    storedTodos && setTodo(storedTodos);
   }, [])
 
   useEffect(() => {
