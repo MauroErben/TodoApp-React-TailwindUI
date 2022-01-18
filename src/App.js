@@ -7,31 +7,42 @@ function App() {
   const KEY = 'todo-tailwind';
   const [todo, setTodo] = useState([]);
   const todoRef = useRef();
-  
+
+  /**
+   * El primer useEffect verifica si existen objetos almacenados al cargar la página y los renderiza.
+   * El segundo useEffect almacena el objeto "todo" en localStorage cuando se cambia su estado.
+   */
   useEffect(() => {
     const storedTodos = JSON.parse(localStorage.getItem(KEY));
     storedTodos && setTodo(storedTodos);
   }, [])
 
+ 
   useEffect(() => {
     localStorage.setItem(KEY, JSON.stringify(todo))
   }, [todo])
 
+  //Esta funcion agrega un objeto "todo".
   const handleAddTodo = (evt) => {
     evt.preventDefault();
-    const todoItem = todoRef.current.value;
-    if(todoItem === '') return;
+    const todoItem = todoRef.current.value; 
+    if(todoItem === '') return; 
     setTodo([...todo, {id: uuidv4(), name: todoItem, selected: false}]);
-    todoRef.current.value = null;
+    todoRef.current.value = null; 
   }
 
+  /**
+   * Esta funcion cambia el estado "selected" entre true o false de cada objeto "todo" seleccionado con un checkbox. 
+   * @param {*} id - Con este parametro verificamos si coincide el elemento seleccionado por id 
+   */
   const handleCheckTodo = (id) => {
-    const copy = [...todo];
+    const copy = [...todo]; 
     const todoFind = copy.find(t => t.id === id);
     todoFind.selected = !todoFind.selected;
     setTodo(copy);
   }
 
+  //Al hacer clic en el boto "eliminar" esta funcion re-renderiza todos los elementos "todo" que tengan el valor "selected: false" asi borrando los que tengan el valor "selected: true".
   const handleDeleteTodo = () => {
     const newTodo = todo.filter(t => !t.selected);
     setTodo(newTodo);
